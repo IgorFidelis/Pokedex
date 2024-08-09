@@ -88,10 +88,19 @@ const renderPokemon = pokemons=>{
 
       divBorder.className = 'card  divBorder border-5';
       divBorder.style.setProperty('--type-color', getTypeColor(firstype));
+      divBorder.setAttribute('data-bs-toggle', 'modal');
+      divBorder.setAttribute('data-bs-target', '#staticBackdrop');
+
+
       img.setAttribute('src', imagUrl);
       img.setAttribute('alt', name);
       img.setAttribute('width', tamanho);
       img.setAttribute('height', tamanho);
+      
+
+
+      console.log(img);
+      
       img.className = 'card-img-top p-2';
       divbody.className = 'card-body border-top border-light border-4';
       h5.className = 'card-title text-center';
@@ -132,7 +141,8 @@ const renderPageLoaded = async ()=>{
  const pokemons = await getPokemons()
  renderPokemon(pokemons);
  handLeNextPokemonsRender(); 
-    
+  
+ return pokemons
 };
 
 renderPageLoaded();

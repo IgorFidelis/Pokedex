@@ -34,13 +34,38 @@
             </li> -->
             
         </ul>
-          
+        
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">name_pokemon</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <img src="assets/pokeball.svg" class="card-img-top p-2" alt="" width="166px" height="166px">
+                <ul class="mt-1 border-top">
+                  <li class="border-bottom p-1">hp</li>
+                  <li class="border-bottom p-1">ataque</li>
+                  <li class="border-bottom p-1">defesa</li>
+                  <li class="border-bottom p-1">super-ataque</li>
+                  <li class="border-bottom p-1">super-defesa</li>
+                  <li class="border-bottom p-1">velocidade</li>
+                </ul>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
     </main>
     
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script type="module" src="app.js"></script>
+    <script src="app.js"></script>
 
   </body>
 </html>
