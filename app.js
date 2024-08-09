@@ -1,3 +1,5 @@
+import alerta from './script.js'
+
 const getTypeColor = type => {
    const normal = '#F5F5F5'
    return {
@@ -83,6 +85,7 @@ const renderPokemon = pokemons=>{
       const [firstype] = types;
 
       li.classList.add('col');
+      li.addEventListener('click',alerta);
       divBorder.className = 'card  divBorder border-5';
       divBorder.style.setProperty('--type-color', getTypeColor(firstype));
       img.setAttribute('src', imagUrl);
@@ -103,7 +106,7 @@ const renderPokemon = pokemons=>{
 
       fraguimento.append(li);
    });
-
+   
    ul.append(fraguimento);
 
 };
