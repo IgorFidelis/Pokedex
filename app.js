@@ -48,6 +48,20 @@ const getPokeIds = pokeResult=> pokeResult.map(({url}) =>{
 const limit = 15;
 let offset = 0;
 
+const getStatus = async (pokeResult)=>{
+   const fullfilt = await getAllFulfilled({fuc:poke=> fetch(poke.url), arr: pokeResult })
+   const pokePromise = fullfilt.map(res=> res.value.json());
+   const pokemon = await Promise.all(pokePromise);
+   return pokemon.map(poke=> poke.stats.map(base=> (base.base_stat)));
+};
+
+const getNameStatus = async (pokeResult)=>{
+   const fullfilt = await getAllFulfilled({fuc:poke=> fetch(poke.url), arr: pokeResult })
+   const pokePromise = fullfilt.map(res=> res.value.json());
+   const pokemon = await Promise.all(pokePromise);
+   return pokemon.map(poke=> poke.stats.map(base=> (base.stat.name)));
+};
+
 const getPokemons = async ()=> {
    try {
       const result = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
@@ -57,9 +71,13 @@ const getPokemons = async ()=> {
       const pokeType = await getPokeType(pokeResult);
       const ids = getPokeIds(pokeResult);
       const pokeImgs = await getPokeImg(pokeResult);
-      const pokemons = ids.map((id, i)=> ({id, name: pokeResult[i].name, types: pokeType[i], imagUrl: pokeImgs[i]}))
+      const statusNumber = await getStatus(pokeResult);
+      const statusName = await getNameStatus(pokeResult);
+      
+      const pokemons = ids.map((id, i)=> ({id, name: pokeResult[i].name, types: pokeType[i], imagUrl: pokeImgs[i],numberStatus : statusNumber[i] ,nameStatus :statusName[i]}))
 
       offset += limit;
+            
       return pokemons
     
  } catch (error) {
@@ -68,11 +86,23 @@ const getPokemons = async ()=> {
  }
 };
 
+const addDataModal = ({ id, name, types, imagUrl, numberStatus, nameStatus })=>{
+   const imgModal = document.querySelector('#imgModal');
+   const modalTitle = document.querySelector('.modal-title');
+   const liModal = document.querySelectorAll('[data-ul="status"] li');
+
+   imgModal.setAttribute('src',imagUrl);
+   modalTitle.textContent = `${id}. ${name[0].toUpperCase()}${name.slice(1)}`;
+   liModal.forEach((li,i)=>{
+      li.textContent = `${nameStatus[i]}: ${numberStatus[i]}`
+   });
+}
+
 const renderPokemon = pokemons=>{
    const ul = document.querySelector('[data-ul="pokemons"]');
    const fraguimento = document.createDocumentFragment();
 
-   pokemons.forEach(({ id, name, types, imagUrl }) => {
+   pokemons.forEach(({ id, name, types, imagUrl, numberStatus, nameStatus }) => {
       const li = document.createElement('li');
       const divBorder = document.createElement('div');
       const img = document.createElement('img');
@@ -84,7 +114,6 @@ const renderPokemon = pokemons=>{
 
       li.classList.add('col');
 
-      
 
       divBorder.className = 'card  divBorder border-5';
       divBorder.style.setProperty('--type-color', getTypeColor(firstype));
@@ -96,10 +125,7 @@ const renderPokemon = pokemons=>{
       img.setAttribute('alt', name);
       img.setAttribute('width', tamanho);
       img.setAttribute('height', tamanho);
-      
 
-
-      console.log(img);
       
       img.className = 'card-img-top p-2';
       divbody.className = 'card-body border-top border-light border-4';
@@ -113,7 +139,11 @@ const renderPokemon = pokemons=>{
       divBorder.append(img, divbody);
       li.append(divBorder);
 
-      fraguimento.append(li);
+      divBorder.addEventListener('click',()=>{
+         addDataModal({ id, name, types, imagUrl, numberStatus, nameStatus });
+      });
+      
+      fraguimento.append(li);  
    });
    
    ul.append(fraguimento);
@@ -142,7 +172,6 @@ const renderPageLoaded = async ()=>{
  renderPokemon(pokemons);
  handLeNextPokemonsRender(); 
   
- return pokemons
 };
 
 renderPageLoaded();
