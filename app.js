@@ -36,7 +36,7 @@ const getPokeImg = async (pokeResult)=>{
    const fullfilt =  await getAllFulfilled({arr: pokeResult, fuc:poke=> fetch(poke.url)});
    const pokePromise = fullfilt.map(res=> res.value.json());
    const pokemons = await Promise.all(pokePromise);
-   return pokemons.map(spri=> spri.sprites.other.dream_world.front_default);
+   return pokemons.map(spri=> spri.sprites.other['official-artwork'].front_default);
 }
 
 const getPokeIds = pokeResult=> pokeResult.map(({url}) =>{ 
@@ -86,12 +86,16 @@ const getPokemons = async ()=> {
  }
 };
 
-const addDataModal = ({ id, name, types, imagUrl, numberStatus, nameStatus })=>{
+const addDataModal = ({ id, name, imagUrl, numberStatus, nameStatus })=>{
    const imgModal = document.querySelector('#imgModal');
    const modalTitle = document.querySelector('.modal-title');
    const liModal = document.querySelectorAll('[data-ul="status"] li');
+   const tamanho = '210px';
 
    imgModal.setAttribute('src',imagUrl);
+   imgModal.setAttribute('width', tamanho);
+   imgModal.setAttribute('height', tamanho);
+
    modalTitle.textContent = `${id}. ${name[0].toUpperCase()}${name.slice(1)}`;
    liModal.forEach((li,i)=>{
       li.textContent = `${nameStatus[i]}: ${numberStatus[i]}`
@@ -109,7 +113,7 @@ const renderPokemon = pokemons=>{
       const divbody = document.createElement('div');
       const h5 = document.createElement('h5');
       const p = document.createElement('p');
-      const tamanho = '166px'
+      const tamanho = '250px'
       const [firstype] = types;
 
       li.classList.add('col');
